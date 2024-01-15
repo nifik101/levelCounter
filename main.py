@@ -33,6 +33,9 @@ def existing_level_1_used(items: List[int]) -> int:
 
 
 def run_app() -> None:
+    """
+        run_app Skapar Streamlit GUI och hanterar input/output av beräkning. 
+    """
     st.title("Level 1 counter")
 
     target_level = st.number_input("Target level :dart:", min_value=1, max_value=20, value=4,
@@ -50,5 +53,4 @@ def run_app() -> None:
 
 
 if __name__ == "__main__":
-    # run_app()
-    print(type(existing_level_1_used([2,4,5])))
+    run_app()
