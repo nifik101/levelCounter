@@ -38,18 +38,54 @@ def run_app() -> None:
     """
     st.title("Level 1 counter")
 
-    target_level = st.number_input("Target level :dart:", min_value=1, max_value=20, value=4,
+    target_level = st.number_input("Target level :dart:", min_value=1, max_value=50, value=4,
                                    help="Set target level, max value: 50")
 
     items_level_str = st.text_input("Existing items level, SEPERATE WITH ' , ' (comma) ")
 
     if st.button("Calculate"):
-        items_list = [int(number) for number in items_level_str.split(",")] if items_level_str else []
+        try:
+            items_list = [int(number) for number in items_level_str.split(",")] if items_level_str else []
+        except ValueError:
+            st.error("Ogiltig input: Ange endast siffror separerade med kommatecken, inga släpande kommatecken", icon="🙅")
+            return
 
         calculated_target_level = level_1_needed(target_level)
         calculated_items_total = existing_level_1_used(items_list)
+        total_level_1 = calculated_target_level - calculated_items_total
 
-        st.write(calculated_target_level - calculated_items_total)
+        if total_level_1 < 0: 
+            st.warning("Bror, du har redan items för att nå din Target Level", icon="🙄")
+
+        st.markdown(f"""
+        ## 🌟 Nödvändiga Nivå 1: {total_level_1}
+
+        ### 🎯 Målnivå: {target_level}
+
+        ### 🧳 Värde existerande items: {calculated_items_total}
+
+        För att nå din målnivå av **{target_level}**, behöver du samla ihop **{total_level_1}** nivå 1-poäng. 
+        """, unsafe_allow_html=True)
+        
+        # st.markdown(f"""
+        # <style>
+        # .custom-style {{
+        #     padding: 10px;
+        #     background-color: #f0f2f6;
+        #     border-radius: 10px;
+        #     border: 2px solid #4e73df;
+        #     color: #4e73df;
+        #     font-family: Arial, sans-serif;
+        #     text-align: center;
+        # }}
+        # </style>
+
+        # <div class="custom-style">
+        #     <h2>🎯 Målnivå: {target_level}</h2>
+        #     <h3>🌟 Nödvändiga Nivå 1: {total_level_1}</h3>
+        #     <p>För att nå din målnivå av <strong>{target_level}</strong>, behöver du samla ihop <strong>{total_level_1}</strong> nivå 1-poäng.</p>
+        # </div>
+        # """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
